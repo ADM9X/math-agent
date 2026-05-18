@@ -115,5 +115,67 @@
     <script src="js/modules/fraction.js"></script>
     <script src="js/modules/transform.js"></script>
     <script src="js/modules/segment.js"></script>
+
+    <!-- LLM 配置按钮直接绑定 -->
+    <script>
+        document.getElementById('openLlmConfig').onclick = function() {
+            console.log('Opening LLM config modal');
+            var modal = document.getElementById('llmConfigModal');
+            var cfgEndpoint = document.getElementById('cfgEndpoint');
+            var cfgApiKey = document.getElementById('cfgApiKey');
+            var cfgModel = document.getElementById('cfgModel');
+
+            // 加载当前配置
+            var stored = localStorage.getItem('llm_config');
+            if (stored) {
+                var cfg = JSON.parse(stored);
+                cfgEndpoint.value = cfg.apiEndpoint || 'https://api.deepseek.com/v1/chat/completions';
+                cfgApiKey.value = cfg.apiKey || '';
+                cfgModel.value = cfg.model || 'deepseek-v4-flash';
+            } else {
+                cfgEndpoint.value = 'https://api.deepseek.com/v1/chat/completions';
+                cfgApiKey.value = '';
+                cfgModel.value = 'deepseek-v4-flash';
+            }
+
+            modal.classList.add('show');
+        };
+
+        document.getElementById('llmConfigSave').onclick = function() {
+            console.log('Saving LLM config');
+            var cfgEndpoint = document.getElementById('cfgEndpoint').value.trim() || 'https://api.deepseek.com/v1/chat/completions';
+            var cfgApiKey = document.getElementById('cfgApiKey').value.trim();
+            var cfgModel = document.getElementById('cfgModel').value.trim() || 'deepseek-v4-flash';
+
+            var config = {
+                apiEndpoint: cfgEndpoint,
+                apiKey: cfgApiKey,
+                model: cfgModel
+            };
+
+            localStorage.setItem('llm_config', JSON.stringify(config));
+
+            // 更新 CONFIG 对象
+            CONFIG.apiEndpoint = cfgEndpoint;
+            CONFIG.apiKey = cfgApiKey;
+            CONFIG.model = cfgModel;
+
+            console.log('Config saved:', config);
+
+            document.getElementById('llmConfigModal').classList.remove('show');
+            alert('配置已保存！');
+        };
+
+        document.getElementById('llmConfigCancel').onclick = function() {
+            document.getElementById('llmConfigModal').classList.remove('show');
+        };
+
+        // 点击弹窗背景关闭
+        document.getElementById('llmConfigModal').onclick = function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        };
+    </script>
 </body>
 </html>
