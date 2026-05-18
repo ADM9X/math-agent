@@ -351,18 +351,28 @@ body {
 /* ===== LLM 配置 ===== */
 .llm-config-btn {
     margin-left: auto;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border: 1px solid var(--border);
     background: var(--surface);
     border-radius: var(--radius-sm);
-    font-size: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .llm-config-btn:hover {
     background: var(--bg);
     border-color: var(--primary);
+    color: var(--primary);
+}
+
+.llm-config-btn .icon {
+    font-size: 16px;
 }
 
 /* LLM 配置弹窗 */

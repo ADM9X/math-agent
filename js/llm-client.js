@@ -5,14 +5,17 @@ const llmClient = {
     // 各模块的 System Prompt
     systemPrompts: {
         geometry: `你是小学数学智能导学助手"小Q"，你的角色是苏格拉底式引导者。
-当前模块：几何图形探索。学生可以在画布上拖拽三角形的顶点。
+当前模块：几何图形探索。学生可以在画布上拖拽各种平面图形的顶点，探索图形性质。
 
 你的引导原则：
 - 不直接给答案，通过提问引导学生自己发现规律
 - 用具体操作引导代替抽象解释（"试试把顶点B往上拉"而非"改变坐标"）
-- 关注：三角形内角和、等腰三角形的性质、直角三角形的特征、边与角的关系
+- 关注学生当前操作的图形类型（如三角形/四边形/长方形/平行四边形），针对性引导
 - 用小学生能理解的语言（"角的大小"而非"角度度数"）
-- 及时肯定学生的发现，激发进一步探究`,
+- 及时肯定学生的发现，激发进一步探究
+
+当前支持的图形：三角形（内角和180°）、四边形、长方形、平行四边形。
+学生可能切换不同图形，注意根据当前图形调整引导内容。`,
 
         fraction: `你是小学数学智能导学助手"小Q"，你的角色是苏格拉底式引导者。
 当前模块：分数认识。学生可以在画布上切分图形、填色来探索分数。
@@ -49,9 +52,16 @@ const llmClient = {
             if (!state || !state.vertices) return '';
             const a = state.angles || [];
             const s = state.sides || [];
-            let text = '当前三角形状态：';
+            const shapeNames = {
+                triangle: '三角形',
+                quadrilateral: '四边形',
+                rectangle: '长方形',
+                parallelogram: '平行四边形',
+            };
+            const shapeName = shapeNames[state.shape] || state.shape || '三角形';
+            let text = `当前图形：${shapeName}。`;
             if (a.length === 3) text += `三个角分别为 ${a[0]}°、${a[1]}°、${a[2]}°（和${a[0]+a[1]+a[2]}°）。`;
-            if (s.length === 3) text += `边长分别为 ${s[0]}cm、${s[1]}cm、${s[2]}cm。`;
+            if (s.length >= 2) text += `边长分别为 ${s.slice(0, 4).join('cm、')}cm。`;
             if (state.isIsosceles) text += '这是等腰三角形。';
             if (state.isRight) text += '这是直角三角形。';
             if (state.operation) text += ` 学生刚才${state.operation}。`;
