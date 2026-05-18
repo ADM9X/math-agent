@@ -365,17 +365,47 @@ body {
     border-color: var(--primary);
 }
 
+/* LLM 配置弹窗 */
+#llmConfigModal .modal-content {
+    padding: 32px;
+    max-width: 440px;
+}
+
+.config-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.config-header-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--primary-bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.config-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
 .config-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-top: 16px;
+    gap: 18px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .form-group label {
@@ -385,31 +415,45 @@ body {
 }
 
 .form-group input {
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
+    font-family: inherit;
 }
 
 .form-group input:focus {
-    border-color: var(--primary-light);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.config-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: -10px;
 }
 
 .config-actions {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
-    justify-content: flex-end;
+    margin-top: 28px;
 }
 
 .modal-btn-primary, .modal-btn-secondary {
-    padding: 8px 20px;
+    flex: 1;
+    padding: 12px 20px;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .modal-btn-primary {
@@ -419,12 +463,13 @@ body {
 
 .modal-btn-primary:hover {
     background: var(--primary-light);
+    transform: translateY(-1px);
 }
 
 .modal-btn-secondary {
     background: var(--bg);
     color: var(--text);
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
 }
 
 .modal-btn-secondary:hover {

@@ -70,7 +70,10 @@
     <!-- LLM 设置弹窗 -->
     <div class="modal-overlay" id="llmConfigModal">
         <div class="modal-content">
-            <h2>LLM 配置</h2>
+            <div class="config-header">
+                <div class="config-header-icon">🤖</div>
+                <h2>LLM 配置</h2>
+            </div>
             <div class="config-form">
                 <div class="form-group">
                     <label>API Endpoint</label>
@@ -79,6 +82,7 @@
                 <div class="form-group">
                     <label>API Key</label>
                     <input type="password" id="cfgApiKey" placeholder="sk-..." />
+                    <span class="config-hint">Key 仅存储在本地浏览器中</span>
                 </div>
                 <div class="form-group">
                     <label>Model</label>

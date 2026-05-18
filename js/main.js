@@ -122,6 +122,11 @@ function initLlmConfig() {
         model: document.getElementById('cfgModel'),
     };
 
+    if (!modal || !openBtn) {
+        console.error('LLM config elements not found:', { modal, openBtn });
+        return;
+    }
+
     // 打开弹窗
     openBtn.addEventListener('click', () => {
         const current = getCurrentLLMConfig();
@@ -133,23 +138,25 @@ function initLlmConfig() {
 
     // 关闭弹窗
     const closeModal = () => modal.classList.remove('show');
-    cancelBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
 
     // 保存配置
-    saveBtn.addEventListener('click', () => {
-        const config = {
-            apiEndpoint: inputs.apiEndpoint.value.trim() || 'https://api.deepseek.com/v1/chat/completions',
-            apiKey: inputs.apiKey.value.trim(),
-            model: inputs.model.value.trim() || 'deepseek-v4-flash',
-        };
-        saveLLMConfig(config);
-        llmClient.init();
-        closeModal();
-        addSystemMessage('LLM 配置已更新');
-    });
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const config = {
+                apiEndpoint: inputs.apiEndpoint.value.trim() || 'https://api.deepseek.com/v1/chat/completions',
+                apiKey: inputs.apiKey.value.trim(),
+                model: inputs.model.value.trim() || 'deepseek-v4-flash',
+            };
+            saveLLMConfig(config);
+            llmClient.init();
+            closeModal();
+            addSystemMessage('LLM 配置已更新');
+        });
+    }
 }
 
 // ===== 初始化 =====
