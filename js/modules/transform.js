@@ -435,10 +435,12 @@ const transformModule = {
         if (this.drag3D) {
             this.reportOperation('旋转了立体视角');
         }
-        this.dragging = false;
-        this.dragType = null;
-        this.drag3D = false;
-        this.engine.canvas.style.cursor = 'default';
+        if (this.dragging || this.drag3D) {
+            this.dragging = false;
+            this.dragType = null;
+            this.drag3D = false;
+            this.engine.canvas.style.cursor = 'default';
+        }
     },
 
     hitTestShape(pos, vertices) {

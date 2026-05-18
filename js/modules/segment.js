@@ -167,8 +167,10 @@ const segmentModule = {
             const s = this.segments[this.dragging.segIdx];
             this.reportOperation(`调整了${s.label}段长度`);
         }
-        this.dragging = null;
-        this.engine.canvas.style.cursor = 'default';
+        if (this.dragging) {
+            this.dragging = null;
+            this.engine.canvas.style.cursor = 'default';
+        }
     },
 
     handleToolbar(action) {

@@ -154,9 +154,11 @@ const geometryModule = {
     onUp() {
         if (this.draggedIdx >= 0) { this.reportOperation('拖拽了顶点'); }
         if (this.drag3D) { this.reportOperation('旋转了立体图形'); }
-        this.draggedIdx = -1;
-        this.drag3D = false;
-        this.engine.canvas.style.cursor = 'default';
+        if (this.draggedIdx >= 0 || this.drag3D) {
+            this.draggedIdx = -1;
+            this.drag3D = false;
+            this.engine.canvas.style.cursor = 'default';
+        }
     },
 
     // 长方形约束：保持直角

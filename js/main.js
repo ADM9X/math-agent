@@ -110,12 +110,55 @@ function resetIdleTimer() {
     }, CONFIG.idleThreshold);
 }
 
+// ===== LLM 配置弹窗 =====
+function initLlmConfig() {
+    const modal = document.getElementById('llmConfigModal');
+    const openBtn = document.getElementById('openLlmConfig');
+    const saveBtn = document.getElementById('llmConfigSave');
+    const cancelBtn = document.getElementById('llmConfigCancel');
+    const inputs = {
+        apiEndpoint: document.getElementById('cfgEndpoint'),
+        apiKey: document.getElementById('cfgApiKey'),
+        model: document.getElementById('cfgModel'),
+    };
+
+    // 打开弹窗
+    openBtn.addEventListener('click', () => {
+        const current = getCurrentLLMConfig();
+        inputs.apiEndpoint.value = current.apiEndpoint;
+        inputs.apiKey.value = current.apiKey;
+        inputs.model.value = current.model;
+        modal.classList.add('show');
+    });
+
+    // 关闭弹窗
+    const closeModal = () => modal.classList.remove('show');
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // 保存配置
+    saveBtn.addEventListener('click', () => {
+        const config = {
+            apiEndpoint: inputs.apiEndpoint.value.trim() || 'https://api.deepseek.com/v1/chat/completions',
+            apiKey: inputs.apiKey.value.trim(),
+            model: inputs.model.value.trim() || 'deepseek-v4-flash',
+        };
+        saveLLMConfig(config);
+        llmClient.init();
+        closeModal();
+        addSystemMessage('LLM 配置已更新');
+    });
+}
+
 // ===== 初始化 =====
 function init() {
     canvasEngine.init('mainCanvas');
     llmClient.init();
     chatUI.init();
     initModuleTabs();
+    initLlmConfig();
 
     // 默认启动几何图形模块
     switchModule('geometry');
